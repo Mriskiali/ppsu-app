@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  ADMIN
+  PETUGAS
+}
+
+enum ReviewStatus {
+  PENDING
+  DITERIMA
+  DITOLAK
+}
+
+enum Bidang {
+  KERUSAKAN
+  KEBERSIHAN
+  LAINNYA
+}
+
+model User {
+  id            String   @id @default(uuid())
+  role          UserRole @default(PETUGAS)
+  petugasId     String   @unique
+  nama          String
+  noTelp        String?
+  aktif         Boolean  @default(true)
+  passwordHash  String
+  laporanDibuat Laporan[] @relation("LaporanByUser")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([role])
+  @@index([aktif])
+}
+
+model Laporan {
+  id             String       @id @default(uuid())
+  pelaporUserId  String
+  pelaporUser    User         @relation("LaporanByUser", fields: [pelaporUserId], references: [id], onDelete: Cascade)
+  judul          String
+  deskripsi      String
+  bidang         Bidang
+  statusReview   ReviewStatus @default(PENDING)
+  location       String
+  fotoSesudah    String[]     @db.Text
+  performedAt    DateTime?
+  performedOn    DateTime?    @db.Date
+  reviewedAt     DateTime?
+  reviewNote     String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([pelaporUserId, createdAt])
+  @@index([statusReview, createdAt])
+  @@index([bidang])
+  @@index([performedOn, statusReview])
+}

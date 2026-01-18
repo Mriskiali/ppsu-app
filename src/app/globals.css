@@ -1,0 +1,213 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* gunakan .dark pada <html> untuk dark mode */
+@custom-variant dark (&:is(.dark *));
+
+/* =========================================================
+   1) Tailwind theme alias (kompatibel shadcn & utilities v4)
+   ========================================================= */
+@theme inline {
+  /* shadcn semantic (ambil dari CSS vars) */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  /* radius helper utk utilities rounded-... */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* sidebar tokens */
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  /* chart tokens */
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  /* ===== tambahan: skala primary + status utilities ===== */
+  --color-primary-50: hsl(var(--primary-50));
+  --color-primary-100: hsl(var(--primary-100));
+  --color-primary-200: hsl(var(--primary-200));
+  --color-primary-300: hsl(var(--primary-300));
+  --color-primary-400: hsl(var(--primary-400));
+  --color-primary-500: hsl(var(--primary-500));
+  --color-primary-600: hsl(var(--primary)); /* base */
+  --color-primary-700: hsl(var(--primary-700));
+  --color-primary-800: hsl(var(--primary-800));
+  --color-primary-900: hsl(var(--primary-900));
+  --color-primary-950: hsl(var(--primary-950));
+
+  --color-success-600: hsl(var(--success));
+  --color-info-600: hsl(var(--info));
+  --color-warning-600: hsl(var(--warning));
+  --color-destructive-600: hsl(var(--destructive));
+}
+
+/* =========================================================
+   2) Light theme — PPA (PPSU Orange) dari palet kamu
+   ========================================================= */
+:root {
+  /* radius */
+  --radius: 0.75rem;
+
+  /* === palet inti (ANGKA HSL, bukan hsl()) === */
+  --background: 24 14% 98%;
+  --foreground: 24 10% 10%;
+  --card: 24 14% 100%;
+  --card-foreground: 24 10% 10%;
+  --popover: 24 14% 100%;
+  --popover-foreground: 24 10% 10%;
+  --primary: 25 95% 53%;
+  --primary-foreground: 27 100% 98%;
+  --secondary: 28 16% 92%;
+  --secondary-foreground: 24 14% 12%;
+  --muted: 28 16% 92%;
+  --muted-foreground: 24 8% 40%;
+  --accent: 36 94% 56%;
+  --accent-foreground: 24 14% 8%;
+  --destructive: 8 71% 53%;
+  --destructive-foreground: 27 100% 98%;
+  --border: 25 18% 82%;
+  --input: 25 18% 82%;
+  --ring: 25 95% 53%;
+
+  /* skala primary (turunan dari --primary: 25 95% 53%) */
+  --primary-50: 25 100% 98%;
+  --primary-100: 25 100% 92%;
+  --primary-200: 25 96% 84%;
+  --primary-300: 25 95% 74%;
+  --primary-400: 25 95% 64%;
+  --primary-500: 25 95% 58%;
+  /* --primary (600) = base */
+  --primary-700: 25 88% 47%;
+  --primary-800: 25 74% 40%;
+  --primary-900: 25 60% 33%;
+  --primary-950: 25 55% 25%;
+
+  /* status utilities */
+  --success: 142 72% 35%;
+  --info: 221 83% 53%;
+  --warning: 38 92% 50%;
+
+  /* charts (harmonis dengan brand) */
+  --chart-1: var(--primary); /* oranye */
+  --chart-2: var(--info); /* biru */
+  --chart-3: 146 47% 43%; /* hijau alternatif */
+  --chart-4: var(--warning); /* kuning */
+  --chart-5: var(--destructive); /* merah */
+
+  /* sidebar */
+  --sidebar: 24 14% 100%;
+  --sidebar-foreground: 24 10% 10%;
+  --sidebar-primary: 25 60% 33%; /* nav active gelap */
+  --sidebar-primary-foreground: 27 100% 98%;
+  --sidebar-accent: 28 16% 92%;
+  --sidebar-accent-foreground: 24 10% 12%;
+  --sidebar-border: 25 18% 82%;
+  --sidebar-ring: 25 95% 53%;
+}
+
+/* =========================================================
+   3) Dark theme — dari palet kamu (brand tetap kontras)
+   ========================================================= */
+.dark {
+  --background: 24 14% 8%;
+  --foreground: 27 100% 98%;
+  --card: 24 14% 12%;
+  --card-foreground: 27 100% 98%;
+  --popover: 24 14% 12%;
+  --popover-foreground: 27 100% 98%;
+  --primary: 25 95% 53%;
+  --primary-foreground: 27 100% 98%;
+  --secondary: 28 14% 16%;
+  --secondary-foreground: 27 100% 98%;
+  --muted: 28 14% 16%;
+  --muted-foreground: 27 50% 82%;
+  --accent: 36 94% 56%;
+  --accent-foreground: 24 14% 8%;
+  --destructive: 8 71% 53%;
+  --destructive-foreground: 27 100% 98%;
+  --border: 25 18% 22%;
+  --input: 25 18% 22%;
+  --ring: 25 95% 53%;
+
+  /* skala primary untuk dark (sedikit adjust lightness) */
+  --primary-50: 25 30% 12%;
+  --primary-100: 25 45% 18%;
+  --primary-200: 25 60% 24%;
+  --primary-300: 25 74% 32%;
+  --primary-400: 25 88% 40%;
+  --primary-500: 25 92% 47%;
+  /* --primary (600) = 25 95% 53% */
+  --primary-700: 25 95% 59%;
+  --primary-800: 25 96% 66%;
+  --primary-900: 25 96% 74%;
+  --primary-950: 25 96% 82%;
+
+  /* status utilities (tetap kontras) */
+  --success: 142 72% 40%;
+  --info: 221 83% 60%;
+  --warning: 38 92% 56%;
+
+  /* charts */
+  --chart-1: 25 92% 58%;
+  --chart-2: 221 83% 60%;
+  --chart-3: 146 47% 48%;
+  --chart-4: 38 92% 56%;
+  --chart-5: 8 71% 58%;
+
+  /* sidebar */
+  --sidebar: 24 14% 12%;
+  --sidebar-foreground: 27 100% 98%;
+  --sidebar-primary: 25 95% 53%;
+  --sidebar-primary-foreground: 27 100% 98%;
+  --sidebar-accent: 28 14% 16%;
+  --sidebar-accent-foreground: 27 100% 98%;
+  --sidebar-border: 25 18% 22%;
+  --sidebar-ring: 25 95% 53%;
+}
+
+/* =========================================================
+   4) Base layer (tetap seperti punyamu)
+   ========================================================= */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
