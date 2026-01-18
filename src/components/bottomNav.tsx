@@ -9,6 +9,7 @@ type Item = {
   href: string;
   label: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  hrefLabel?: string;
 };
 
 const NAV_ITEMS: Item[] = [
