@@ -7,7 +7,7 @@ import { ReviewStatus } from '@/generated/prisma';
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         // --- 1. Cek Autentikasi Admin ---
@@ -21,7 +21,8 @@ export async function PATCH(
         const { status, reviewNote } = body;
 
         // --- 3. Ambil ID Laporan dari URL ---
-        const { id: laporanId } = params;
+        const resolvedParams = await params;
+        const { id: laporanId } = resolvedParams;
         if (!laporanId) {
             return new NextResponse('ID Laporan tidak ditemukan', { status: 400 });
         }

@@ -7,7 +7,7 @@ import { getAuthSession } from '@/lib/auth';
 // Endpoint ini untuk mengambil SATU laporan detail
 export async function GET(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         // 1. Cek Autentikasi (Bisa Admin atau Petugas)
@@ -17,7 +17,8 @@ export async function GET(
         }
 
         // 2. Ambil ID Laporan dari URL
-        const { id: laporanId } = params;
+        const resolvedParams = await params;
+        const { id: laporanId } = resolvedParams;
         if (!laporanId) {
             return new NextResponse('ID Laporan tidak ditemukan', { status: 400 });
         }

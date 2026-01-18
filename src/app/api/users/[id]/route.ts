@@ -16,13 +16,15 @@ async function checkAdminAuth() {
 // --- GET (Membaca 1 Petugas) ---
 export async function GET(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await checkAdminAuth();
 
+        const resolvedParams = await params;
+
         const user = await prisma.user.findUnique({
-            where: { id: params.id },
+            where: { id: resolvedParams.id },
             select: {
                 id: true,
                 role: true,
@@ -51,10 +53,12 @@ export async function GET(
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await checkAdminAuth();
+
+        const resolvedParams = await params;
 
         const body = await req.json();
         const { nama, role, noTelp, aktif } = body;
@@ -64,7 +68,7 @@ export async function PATCH(
         }
 
         const user = await prisma.user.update({
-            where: { id: params.id },
+            where: { id: resolvedParams.id },
             data: {
                 nama,
                 role: role as PrismaRole,
@@ -86,13 +90,15 @@ export async function PATCH(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         await checkAdminAuth();
 
+        const resolvedParams = await params;
+
         const user = await prisma.user.delete({
-            where: { id: params.id },
+            where: { id: resolvedParams.id },
         });
 
         const { passwordHash: _, ...deletedUser } = user;

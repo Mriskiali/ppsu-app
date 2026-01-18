@@ -8,7 +8,7 @@ import { UserRole } from '@/generated/prisma';
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         // 1. Cek Autentikasi Admin
@@ -22,7 +22,8 @@ export async function PATCH(
         const { newPassword } = body;
 
         // 3. Ambil ID Petugas dari URL
-        const { id: userIdToReset } = params;
+        const resolvedParams = await params;
+        const { id: userIdToReset } = resolvedParams;
 
         // Validasi
         if (!newPassword || newPassword.length < 6) {
